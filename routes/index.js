@@ -10,10 +10,10 @@ router.get('/', async function(req, res, next) {
     console.log(userAgent);
 
     if (!dxBlob || !userAgent || !pkey || !surl)
-        return res.send(JSON.stringify({
+        return res.json({
             success: false,
             error: "One of dxBlob, userAgent, pkey, surl missing from body"
-        }));
+        });
 
     let token;
     try {
@@ -37,11 +37,11 @@ router.get('/', async function(req, res, next) {
 
     console.log(token)
     const session = new fc.Session(token);
-    return res.send(JSON.stringify({
+    return res.json({
         success: true,
         captchaToken: token.token,
         captchaUrl: session.getEmbedUrl()
-    }));
+    });
 });
 
 module.exports = router;
