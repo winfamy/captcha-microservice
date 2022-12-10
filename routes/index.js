@@ -1,18 +1,19 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const fc = require("funcaptcha");
 
 /* GET home page. */
-router.get('/', async function(req, res, next) {
+router.any("/", async function (req, res, next) {
     let { dxBlob, userAgent, pkey, surl } = req.query;
-    userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36";
+    userAgent =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36";
     console.log(req.query, req.body);
     console.log(userAgent);
 
     if (!dxBlob || !userAgent || !pkey || !surl)
         return res.json({
             success: false,
-            error: "One of dxBlob, userAgent, pkey, surl missing from body"
+            error: "One of dxBlob, userAgent, pkey, surl missing from body",
         });
 
     let token;
@@ -21,26 +22,28 @@ router.get('/', async function(req, res, next) {
             surl,
             pkey,
             data: {
-                blob: dxBlob
+                blob: dxBlob,
             },
             headers: {
                 "user-agent": userAgent,
             },
-            site: "https://www.roblox.com"
+            site: "https://www.roblox.com",
         });
     } catch (e) {
-        return res.send(JSON.stringify({
-            success: false,
-            error: "Error occurred " + e.toString()
-        }))
+        return res.send(
+            JSON.stringify({
+                success: false,
+                error: "Error occurred " + e.toString(),
+            })
+        );
     }
 
-    console.log(token)
+    console.log(token);
     const session = new fc.Session(token);
     return res.json({
         success: true,
         captchaToken: token.token,
-        captchaUrl: session.getEmbedUrl()
+        captchaUrl: session.getEmbedUrl(),
     });
 });
 
