@@ -3,7 +3,7 @@ var router = express.Router();
 const fc = require("funcaptcha");
 
 /* GET home page. */
-router.any("/", async function (req, res, next) {
+router.all("/", async function (req, res, next) {
     let { dxBlob, userAgent, pkey, surl } = req.query;
     userAgent =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36";
