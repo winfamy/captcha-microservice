@@ -4,7 +4,7 @@ const fc = require("funcaptcha");
 
 /* GET home page. */
 router.all("/", async function (req, res, next) {
-    let { dxBlob, userAgent, pkey, surl } = req.query;
+    let { dxBlob, userAgent, pkey, surl } = req.body;
     userAgent =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36";
     console.log(req.query, req.body);
@@ -29,22 +29,19 @@ router.all("/", async function (req, res, next) {
             },
             site: "https://www.roblox.com",
         });
-    } catch (e) {
-        return res.send(
-            JSON.stringify({
-                success: false,
-                error: "Error occurred " + e.toString(),
-            })
-        );
-    }
 
-    console.log(token);
-    const session = new fc.Session(token);
-    return res.json({
-        success: true,
-        captchaToken: token.token,
-        captchaUrl: session.getEmbedUrl(),
-    });
+        const session = new fc.Session(token);
+        return res.json({
+            success: true,
+            captchaToken: token.token,
+            captchaUrl: session.getEmbedUrl(),
+        });
+    } catch (e) {
+        return res.json({
+            success: false,
+            error: "Error occurred " + e.toString(),
+        });
+    }
 });
 
 module.exports = router;
